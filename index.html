@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <nav id="nav" class="navbar navbar-inverse navbar-fixed-top">
+            <h2>Surveying Vermont's Murals</h2>
+    </nav>
+    <div class="container-fluid main">
+        <div id="sidebar" class="col-sm-4">
+            <div id="sidebarHeader">
+                <p>Welcome! We're looking at Vermont's street art.</p>
+                <p><i>Click a marker or a listing to explore.</i></p>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="muralSearch" placeholder="Search here...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" data-bind="click:muralSearch" type="button">Search</button>
+                    <button class="btn btn-default" data-bind="click:clearSearch" type="button">Clear</button>
+                  </span>
+                </div>
+                <div id="searchError"></div>
+
+            </div>
+            <div class="itemList" data-bind="foreach: itemList">
+                <div class="item" data-bind="attr: {'id':shortname}, click: $parent.selectMarker">
+                    <h3 data-bind="text: title"></h3>
+                    <h4 data-bind="text: artist"></h4>
+                    <img class="previewPic" data-bind="attr:{src: imgSrc}">
+                    <p data-bind="text: description"></p>
+                </div>
+            </div>
+        </div>
+        <div id="map" class="col-sm-8"></div>
+    </div>
+
+    <script type="text/javascript" src="js/knockout.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClm9QraIszCmKznY1zY8dY3E7smzwweos&v=3&callback=initMap"></script>
+
+</body>
+</html>
