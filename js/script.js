@@ -3,7 +3,7 @@ var mapItems = [
         "title": "Tapna Yoga",
         "artist":"Clark Derbes",
         "shortname":"tapna",
-        "description":"blah",
+        "description":"This new Burlington mural was funded by a $3,000 grant from Burlington City Arts.",
         "imgSrc": "https://media1.fdncms.com/sevendaysvt/imager/u/blog/7674183/sota2-1-858bda70d3fcfbfd.jpg",
         "geo": {
             "lat": 44.471659,
@@ -12,9 +12,9 @@ var mapItems = [
     },
     {
         "title": "Milton Gardener's Supply Warehouse",
-        "artist":"Milton Artist Guild",
+        "artist":"Sarah C. Rutherford",
         "shortname":"gardenersupply",
-        "description":"blah",
+        "description":"The Milton Artists' Guild is on a mission to beautify the small northern Vermont town.",
         "imgSrc": "https://media1.fdncms.com/sevendaysvt/imager/u/blog/7674184/sota2-2-4d7526841ba5632a.jpg",
         "geo": {
             "lat": 44.599052,
@@ -25,7 +25,7 @@ var mapItems = [
         "title":"Dealer.com Silos",
         "artist":"Mary Lacy",
         "shortname":"dealersilos",
-        "description":"blah",
+        "description":"These urban silos sport the recognizable geometric stylings of Vermont artist Mary Lacy.",
         "imgSrc": "https://media1.fdncms.com/sevendaysvt/imager/u/slideshow/2869652/episode412.jpg",
         "geo": {
             "lat": 44.465498,
@@ -36,7 +36,7 @@ var mapItems = [
         "title":"Simon's Downtown Mobil",
         "artist":"Anthill Collective",
         "shortname":"simonmobil",
-        "description":"blah",
+        "description":"It took a few tries to get the right mural for this spot.",
         "imgSrc":"https://media1.fdncms.com/sevendaysvt/imager/u/big/2933578/visualart1-1-7024f7f783c4c1f1.jpg",
         "geo":{
             "lat": 44.477873,
@@ -47,7 +47,7 @@ var mapItems = [
         "title":"Jeffersonville Silos",
         "artist":"Sarah C. Rutherford",
         "shortname":"jeffsilos",
-        "description":"blah",
+        "description":"These massive murals stand out on two silos that once belonged to the Bell-Gates Lumber Corporation.",
         "imgSrc":"https://media2.fdncms.com/sevendaysvt/imager/u/blog/3549564/artnews1-1-4caa0ac1bde58ba6.jpg",
         "geo":{
             "lat": 44.647701,
@@ -58,7 +58,7 @@ var mapItems = [
         "title":"\"Everyone Loves a Parade\", Church Street Marketplace",
         "artist":"Pierre Hardy",
         "shortname":"churchst",
-        "description":"Oddly enough, Edward James Olmos has a cameo in the 124-foot-long mural",
+        "description":"Oddly enough, Edward James Olmos has a cameo in the 124-foot-long mural.",
         "imgSrc":"https://media2.fdncms.com/sevendaysvt/imager/u/blog/3632860/wtf1-1-2157cc1e91458592.jpg",
         "geo":{
             "lat": 44.478640,
@@ -80,7 +80,7 @@ var mapItems = [
         "title":"Hummingbird",
         "artist":"Mary Lacy",
         "shortname":"hummingbird",
-        "description":"blah",
+        "description":"This ruby-throated hummingbird decorates a wall right next to City Hall Park.",
         "imgSrc":"https://media1.fdncms.com/sevendaysvt/imager/mary-lacy/u/big/2613588/visualarts1-1.jpg",
         "geo":{
             "lat": 44.476979,
