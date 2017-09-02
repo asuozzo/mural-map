@@ -99,6 +99,8 @@ var initMap = function(){
         zoom:8
       });
 
+    infoWindow = new google.maps.InfoWindow();
+
     bounds = new google.maps.LatLngBounds();
 
     ko.applyBindings(new ViewModel());
@@ -131,11 +133,8 @@ var MapItem = function(data) {
         var latlng = self.marker.getPosition();
         map.panTo(latlng);
         map.setZoom(14);
-
-        self.marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function(){
-            self.marker.setAnimation(null);
-        }, 1500);
+        infoWindow.setContent(self.title());
+        infoWindow.open(map, self.marker);
 
         var scrollPos = $("#" + self.shortname()).offset().top;
         var scrollTop = $("#sidebar").scrollTop();
