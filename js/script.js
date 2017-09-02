@@ -136,6 +136,11 @@ var MapItem = function(data) {
         infoWindow.setContent(self.title());
         infoWindow.open(map, self.marker);
 
+        self.marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(){
+            self.marker.setAnimation(null);
+        }, 1500);
+
         var scrollPos = $("#" + self.shortname()).offset().top;
         var scrollTop = $("#sidebar").scrollTop();
         var navHeight = $("#nav").outerHeight(true);
