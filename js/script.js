@@ -130,6 +130,11 @@ var MapItem = function(data) {
 
     // pan to the marker and scroll to/highlight the corresponding sidebar item
     this.highlightMarker = function(){
+
+        //reset
+        $(".infoResults").css("display","none");
+        $(".item").css("background-color","transparent");
+
         var latlng = self.marker.getPosition();
         map.panTo(latlng);
         map.setZoom(14);
@@ -150,8 +155,6 @@ var MapItem = function(data) {
         $("#sidebar").animate({
             scrollTop: scrollPos},
             1000 );
-
-        $(".item").css("background-color","transparent");
 
         $("#" + self.shortname()).css("background-color","mediumorchid");
 
@@ -237,5 +240,29 @@ var ViewModel = function(data){
         });
     };
 
+
+    this.getRestaurants = function(){
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
+
+        resultsBlock.text("");
+
+        resultsBlock.css("display","block").text("restaurants");
+    };
+
+    this.getDrinks = function(){
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
+
+        resultsBlock.text("");
+
+        resultsBlock.css("display","block").text("drinks");
+    };
+
+    this.getHotels = function(){
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
+
+        resultsBlock.text("");
+
+        resultsBlock.css("display","block").text("hotels");
+    }
 };
 
