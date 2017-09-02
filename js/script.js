@@ -126,6 +126,7 @@ var MapItem = function(data) {
         self.highlightMarker();
     });
 
+    // pan to the marker and scroll to/highlight the corresponding sidebar item
     this.highlightMarker = function(){
         var latlng = self.marker.getPosition();
         map.panTo(latlng);
@@ -153,6 +154,7 @@ var MapItem = function(data) {
 
     };
 
+    // search this item's keywords for the entered search terms.
     this.searchFilter = function(textList){
         var keywords = self.title() + " " + self.artist() + " " + self.description();
         keywords = keywords.toLowerCase();
@@ -171,12 +173,14 @@ var MapItem = function(data) {
         }
     };
 
+    // set the marker and corresponding sidebar entry to visible
     this.setVisible = function(){
         self.marker.setVisible(true);
         $("#" + self.shortname()).css("display","block");
         return true;
     };
 
+    // set the marker and corresponding sidebar entry to hidden
     this.setHidden = function(){
         self.marker.setVisible(false);
         $("#" + self.shortname()).css("display","none");
@@ -206,6 +210,7 @@ var ViewModel = function(data){
         $("#searchError").css("display","none");
         var searchTerm = $("#muralSearch").val().toLowerCase();
 
+        // make sure the input field wasn't blank before searching
         if (searchTerm === ""){
             $("#searchError").css("display","block").text("Sorry, I didn't catch that. Try your search again!");
         } else {
@@ -220,6 +225,7 @@ var ViewModel = function(data){
         };
     };
 
+    // clear the search and set all items to visible
     this.clearSearch = function(){
         $("#searchError").css("display","none");
         self.itemList().forEach(function(item){
