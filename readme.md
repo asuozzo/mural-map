@@ -1,0 +1,1 @@
+This is a map of Vermont murals, created using Knockout JS, JQuery and Bootstrap.
