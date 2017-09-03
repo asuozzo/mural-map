@@ -33,15 +33,6 @@
                     <h4 data-bind="text: artist, click: $parent.selectMarker"></h4>
                     <img class="previewPic" data-bind="attr:{src: imgSrc}, click: $parent.selectMarker">
                     <p data-bind="text: description, click: $parent.selectMarker"></p>
-                    <div id="info-container">
-                        <b>What's nearby?</b>
-                        <div class="input-group">
-                            <button class="btn btn-default" data-bind="click: $parent.getRestaurants" type="button">Find food</button>
-                            <button class="btn btn-default"" data-bind="click: $parent.getDrinks" type="button">Find drinks</button>
-                            <button class="btn btn-default" data-bind="click: $parent.getHotels" type="button">Find hotels</button>
-                        </div>
-                        <div class="infoResults"></div>
-                    </div>
                 </div>
             </div>
         </div>
