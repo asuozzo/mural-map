@@ -242,27 +242,63 @@ var ViewModel = function(data){
 
 
     this.getRestaurants = function(){
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
 
+        //reset results block
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
         resultsBlock.text("");
 
-        resultsBlock.css("display","block").text("restaurants");
+        var results = self.getFoursquareData("#"+ this.shortname(), "food", this.marker.position);
+
+        resultsBlock.css("display","block").text(results);
     };
 
     this.getDrinks = function(){
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
 
         resultsBlock.text("");
 
-        resultsBlock.css("display","block").text("drinks");
+        var results = self.getFoursquareData("#" + this.shortname(), "drinks", this.marker.position);
     };
 
     this.getHotels = function(){
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults")
+        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
 
         resultsBlock.text("");
+        var results = self.getFoursquareData("#" + this.shortname(), "hotel", this.marker.position);
 
-        resultsBlock.css("display","block").text("hotels");
-    }
+    };
+
+    this.getFoursquareData = function(id, dataType, position){
+
+        var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng()
+        url += "&client_id=" + foursquare_client_id + "&client_secret=" + foursquare_secret + "&v=20131016&query="+dataType;
+
+        // var url = "http://respons.json";
+
+        $.get(url, function(data){
+            var response = data;
+            response=response.response.groups[0].items;
+
+            var formattedResponse = "<ul>";
+
+            for (i=0;i<5;i++){
+                var item = "<li><span><a href='https://foursquare.com/v/a/" + response[i].venue.id + "' target='_blank'>" + response[i].venue.name + "</a></span></li>";
+                formattedResponse += item;
+            }
+
+            formattedResponse += "</ul>";
+
+            self.populateResults(id, formattedResponse);
+
+
+        }).fail(function(error){
+            self.populateResults(id, "<span>Sorry, the search failed. Please try again later.</span>");
+
+        });
+    };
+
+    this.populateResults = function(id, response){
+        var resultsBlock = $(id).find(".infoResults");
+        resultsBlock.css("display","block").html(response);
+    };
 };
-
