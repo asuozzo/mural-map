@@ -229,7 +229,7 @@ var ViewModel = function(data){
 
         if($(".item:visible").length === 0){
             $("#searchError").css("display","block").text("Your search didn't return any results! Clear it or try again.");
-        };
+        }
     };
 
     // clear the search and set all items to visible
@@ -270,7 +270,7 @@ var ViewModel = function(data){
 
     this.getFoursquareData = function(id, dataType, position){
 
-        var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng()
+        var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng();
         url += "&client_id=" + foursquare_client_id + "&client_secret=" + foursquare_secret + "&v=20131016&query="+dataType;
 
         // var url = "http://respons.json";
