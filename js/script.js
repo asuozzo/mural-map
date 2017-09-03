@@ -275,25 +275,26 @@ var ViewModel = function(data){
 
         // var url = "http://respons.json";
 
-        $.get(url, function(data){
-            var response = data;
-            response=response.response.groups[0].items;
+        $.ajax({
+            url:url,
+            success: function(data){
+                var response = data;
+                response=response.response.groups[0].items;
 
-            var formattedResponse = "<ul>";
+                var formattedResponse = "<ul>";
+                for (i=0;i<5;i++){
+                    var item = "<li><span><a href='https://foursquare.com/v/a/" + response[i].venue.id + "' target='_blank'>" + response[i].venue.name + "</a></span></li>";
+                    formattedResponse += item;
+                }
+                formattedResponse += "</ul>";
 
-            for (i=0;i<5;i++){
-                var item = "<li><span><a href='https://foursquare.com/v/a/" + response[i].venue.id + "' target='_blank'>" + response[i].venue.name + "</a></span></li>";
-                formattedResponse += item;
+                self.populateResults(id, formattedResponse);
+
+            },
+            error: function(error){
+                console.log(error);
+                self.populateResults(id, "<span>Sorry, the search failed. Please try again later.</span>");
             }
-
-            formattedResponse += "</ul>";
-
-            self.populateResults(id, formattedResponse);
-
-
-        }).fail(function(error){
-            self.populateResults(id, "<span>Sorry, the search failed. Please try again later.</span>");
-
         });
     };
 
