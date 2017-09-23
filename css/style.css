@@ -22,7 +22,7 @@ a {
 
 .container-fluid {
     position:absolute;
-    top:50;
+    top:50px;
     height:100%;
     width: 100%;
     padding:0 !important;
