@@ -27,6 +27,7 @@ var MapItem = function(data) {
     this.shortname = ko.observable(data.shortname);
     this.imgSrc = ko.observable(data.imgSrc);
     this.artist = ko.observable(data.artist);
+    this.imgDesc = ko.observable(data.imgDesc)
     this.description = ko.observable(data.description);
 
     this.marker = new google.maps.Marker({

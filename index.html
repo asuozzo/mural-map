@@ -31,7 +31,7 @@
                 <div class="item" data-bind="attr: {'id':shortname}">
                     <h3 data-bind="text: title, click: $parent.selectMarker"></h3>
                     <h4 data-bind="text: artist, click: $parent.selectMarker"></h4>
-                    <img class="previewPic" src="" alt="" data-bind="attr:{src: imgSrc}, click: $parent.selectMarker">
+                    <img class="previewPic" src="" alt="" data-bind="attr:{src: imgSrc,alt:imgDesc}, click: $parent.selectMarker">
                     <p data-bind="text: description, click: $parent.selectMarker"></p>
                     <div id="info-container">
                         <b>What's nearby?</b>
