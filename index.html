@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Vermont Mural Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -31,13 +31,13 @@
                 <div class="item" data-bind="attr: {'id':shortname}">
                     <h3 data-bind="text: title, click: $parent.selectMarker"></h3>
                     <h4 data-bind="text: artist, click: $parent.selectMarker"></h4>
-                    <img class="previewPic" data-bind="attr:{src: imgSrc}, click: $parent.selectMarker">
+                    <img class="previewPic" src="" alt="" data-bind="attr:{src: imgSrc}, click: $parent.selectMarker">
                     <p data-bind="text: description, click: $parent.selectMarker"></p>
                     <div id="info-container">
                         <b>What's nearby?</b>
                         <div class="input-group">
                             <button class="btn btn-default" data-bind="click: $parent.getRestaurants" type="button">Find food</button>
-                            <button class="btn btn-default"" data-bind="click: $parent.getDrinks" type="button">Find drinks</button>
+                            <button class="btn btn-default" data-bind="click: $parent.getDrinks" type="button">Find drinks</button>
                             <button class="btn btn-default" data-bind="click: $parent.getHotels" type="button">Find hotels</button>
                         </div>
                         <div class="infoResults"></div>
@@ -48,9 +48,10 @@
         <div id="map" class="col-sm-8"></div>
     </div>
 
-    <script type="text/javascript" src="js/knockout.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClm9QraIszCmKznY1zY8dY3E7smzwweos&v=3&callback=initMap"></script>
+    <script src="js/knockout.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClm9QraIszCmKznY1zY8dY3E7smzwweos&v=3&callback=initMap" onerror="mapError()"></script>
 
 </body>
 </html>
