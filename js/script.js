@@ -120,6 +120,10 @@ var ViewModel = function(data){
 
     map.fitBounds(bounds);
 
+    google.maps.event.addDomListener(window, 'resize', function() {
+        map.fitBounds(bounds);
+    });
+
     this.selectMarker = function(){
         this.highlightMarker();
     };
