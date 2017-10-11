@@ -44,6 +44,9 @@ var MapItem = function(data) {
     this.foursquareList = ko.observableArray([]);
     this.foursquareError = ko.observable("");
     this.foursquareErrorVisible = ko.observable(false);
+    this.getFoursquareData = function(item, event){
+        getFoursquareData(item, event);
+    }
 
     bounds.extend(this.marker.position);
 
