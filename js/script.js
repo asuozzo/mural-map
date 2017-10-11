@@ -16,9 +16,9 @@ var initMap = function(){
 };
 
 var mapError = function(){
-    console.log("Sorry, something went wrong. Please try reloading the page.")
-    $("#map").html("<div id='mapError'>Whoops, this is embarassing. Something went wrong; please reload the page.</div>")
-}
+    console.log("Sorry, something went wrong. Please try reloading the page.");
+    $("#map").html("<div id='mapError'>Whoops, this is embarassing. Something went wrong; please reload the page.</div>");
+};
 
 var MapItem = function(data) {
     var self=this;
@@ -27,11 +27,11 @@ var MapItem = function(data) {
     this.shortname = ko.observable(data.shortname);
     this.imgSrc = ko.observable(data.imgSrc);
     this.artist = ko.observable(data.artist);
-    this.imgDesc = ko.observable(data.imgDesc)
+    this.imgDesc = ko.observable(data.imgDesc);
     this.description = ko.observable(data.description);
     
     var keywords = self.title() +" " + self.artist() + " " + self.description();
-    keywords = keywords.toLowerCase()
+    keywords = keywords.toLowerCase();
 
     this.keywords = ko.observable(keywords);
 
@@ -48,11 +48,13 @@ var MapItem = function(data) {
     bounds.extend(this.marker.position);
 
     this.marker.addListener("click", function(e){
+        getFoursquareData(self, e);
         self.highlightMarker();
     });
 
     // pan to the marker and scroll to/highlight the corresponding sidebar item
     this.highlightMarker = function(){
+
 
         var latlng = self.marker.getPosition();
         map.panTo(latlng);
@@ -63,7 +65,7 @@ var MapItem = function(data) {
         self.marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function(){
             self.marker.setAnimation(null);
-        }, 1500);
+        }, 1400);
 
         var scrollPos = $("#" + self.shortname()).offset().top;
         var scrollTop = $("#sidebar").scrollTop();
@@ -99,7 +101,7 @@ var ViewModel = function(data){
 
     this.selectMarker = function(item, event){
         this.highlightMarker();
-        self.getFoursquareData(item, event);
+        getFoursquareData(item, event);
     };
 
     this.searchText = ko.observable("");
@@ -109,9 +111,9 @@ var ViewModel = function(data){
         
         if (!searchString){
             self.itemList().forEach(function(item){
-                item.setVisible()
-            })
-            return self.itemList()
+                item.setVisible();
+            });
+            return self.itemList();
         } else {
             return ko.utils.arrayFilter(self.itemList(), function(item){
                 if (item.keywords().indexOf(searchString) > -1){
@@ -122,7 +124,7 @@ var ViewModel = function(data){
                     return false;
                 }
             })
-        }
+        };
     });
 
     map.fitBounds(bounds);
@@ -131,39 +133,40 @@ var ViewModel = function(data){
         map.fitBounds(bounds);
     });
 
-    this.getFoursquareData = function(item, event){
-        var position = item.marker.position;
-        var id = item.shortname();
+};
 
-        if ($(event.currentTarget).attr("type") === "button"){
-            var dataType = $(event.currentTarget).attr("name");
-        } else {
-            var dataType = "food"
-        };
+var getFoursquareData = function(item, event){
+    var position = item.marker.position;
+    var id = item.shortname();
 
-        var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng();
-        url += "&client_id=" + foursquare_client_id + "&client_secret=" + foursquare_secret + "&v=20131016&query="+dataType;
-
-        $.ajax({
-            url:url,
-            success: function(data){
-                item.foursquareError = "";
-                item.foursquareErrorVisible = false;
-
-                var response = data;
-                response=response.response.groups[0].items;
-                
-                item.foursquareList.removeAll();
-                for (var i=0;i<5;i++){
-                    item.foursquareList.push({"link":"https://foursquare.com/v/a/" + response[i].venue.id.toString(), "name":response[i].venue.name})
-                }
-            },
-            error: function(error){
-                console.log(error);
-                item.foursquareError = "Sorry, the search failed. Please try again later."
-                item.foursquareErrorVisible = true;
-            }
-        });
+    var dataType;
+    if ($(event.currentTarget).attr("type") === "button"){
+        dataType = $(event.currentTarget).attr("name");
+    } else {
+        dataType = "food";
     };
 
+    var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng();
+    url += "&client_id=" + foursquare_client_id + "&client_secret=" + foursquare_secret + "&v=20131016&query="+dataType;
+
+    $.ajax({
+        url:url,
+        success: function(data){
+            item.foursquareError("");
+            item.foursquareErrorVisible(false);
+
+            var response = data;
+            response=response.response.groups[0].items;
+            
+            item.foursquareList.removeAll();
+            for (var i=0;i<5;i++){
+                item.foursquareList.push({"link":"https://foursquare.com/v/a/" + response[i].venue.id.toString(), "name":response[i].venue.name});
+            };
+        },
+        error: function(error){
+            console.log(error);
+            item.foursquareError("Sorry, the search failed. Please try again later.");
+            item.foursquareErrorVisible(true);
+        }
+    });
 };
