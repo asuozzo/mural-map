@@ -3,8 +3,9 @@
 <head>
     <title>Vermont Mural Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <nav id="nav" class="navbar navbar-inverse navbar-fixed-top">
@@ -29,15 +30,15 @@
                     <div id="info-container">
                         <b>What's nearby?</b>
                         <div class="input-group">
-                            <button class="btn btn-default" name="food" data-bind="click: $parent.getFoursquareData" type="button">Find food</button>
-                            <button class="btn btn-default" name="drinks" data-bind="click: $parent.getFoursquareData" type="button">Find drinks</button>
-                            <button class="btn btn-default" name="hotel" data-bind="click: $parent.getFoursquareData" type="button">Find hotels</button>
+                            <button class="btn btn-default" name="food" data-bind="click: getFoursquareData" type="button">Find food</button>
+                            <button class="btn btn-default" name="drinks" data-bind="click: getFoursquareData" type="button">Find drinks</button>
+                            <button class="btn btn-default" name="hotel" data-bind="click: getFoursquareData" type="button">Find hotels</button>
                         </div>
                         <div class="info-results">
                             <ul>
-                                <div class="info-list" data-bind="foreach:foursquareList">
+                                <span class="info-list" data-bind="foreach:foursquareList">
                                     <li><span><a data-bind="attr:{href:link},text:name"></a></span></li>
-                                </div>
+                                </span>
                             </ul>
                         </div>
                         <div class="infoError" data-bind="text:foursquareError,visible:foursquareErrorVisible"></div>
