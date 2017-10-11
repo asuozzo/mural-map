@@ -17,17 +17,12 @@
             <div id="sidebarHeader">
                 <p>Welcome! We're looking at Vermont's street art.</p>
                 <p><i>Click a marker or a listing to explore.</i></p>
-                <div class="input-group">
-                  <input type="text" class="form-control" id="muralSearch" placeholder="Search here...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" data-bind="click:muralSearch" type="button">Search</button>
-                    <button class="btn btn-default" data-bind="click:clearSearch" type="button">Clear</button>
-                  </span>
+                <div class="form-group">
+                  <input type="text" class="form-control" data-bind="value: searchText, valueUpdate:'keyup'" id="muralSearch" placeholder="Search here...">
                 </div>
-                <div id="searchError"></div>
 
             </div>
-            <div class="itemList" data-bind="foreach: itemList">
+            <div class="itemList" data-bind="foreach: filteredList">
                 <div class="item" data-bind="attr: {'id':shortname}">
                     <h3 data-bind="text: title, click: $parent.selectMarker"></h3>
                     <h4 data-bind="text: artist, click: $parent.selectMarker"></h4>
@@ -36,11 +31,19 @@
                     <div id="info-container">
                         <b>What's nearby?</b>
                         <div class="input-group">
-                            <button class="btn btn-default" data-bind="click: $parent.getRestaurants" type="button">Find food</button>
-                            <button class="btn btn-default" data-bind="click: $parent.getDrinks" type="button">Find drinks</button>
-                            <button class="btn btn-default" data-bind="click: $parent.getHotels" type="button">Find hotels</button>
+                            <button class="btn btn-default" name="food" data-bind="click: $parent.getFoursquareData" type="button">Find food</button>
+                            <button class="btn btn-default" name="drinks" data-bind="click: $parent.getFoursquareData" type="button">Find drinks</button>
+                            <button class="btn btn-default" name="hotel" data-bind="click: $parent.getFoursquareData" type="button">Find hotels</button>
                         </div>
-                        <div class="infoResults"></div>
+                        <div class="info-results">
+                            <ul>
+                                <div class="info-list" data-bind="foreach:foursquareList">
+                                    <li><span><a data-bind="attr:{href:link},text:name"></a></span></li>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="infoError" data-bind="text:foursquareError,visible:foursquareErrorVisible"></div>
+                        <div class="infoAttribution">Nearby location data from <a href="https://foursquare.com/">Foursquare</a></div>
                     </div>
                 </div>
             </div>
@@ -52,6 +55,7 @@
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClm9QraIszCmKznY1zY8dY3E7smzwweos&v=3&callback=initMap" onerror="mapError()"></script>
+    
 
 </body>
 </html>

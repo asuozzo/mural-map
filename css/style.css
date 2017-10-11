@@ -9,6 +9,10 @@ h2, h3 {
     padding-top:0;
 }
 
+.infoResults{
+    display:block;
+}
+
 a {
     color:#4727FF;
     font-weight: bold;
@@ -49,16 +53,14 @@ a {
     background-color:plum;
 }
 
-.infoResults {
-    display:none;
+#mapError {
+    position:relative;
+    top:225px;
+    font-weight: bold;
 }
 
 #sidebarHeader {
     padding:5px;
-}
-
-#searchError {
-    display: none;
 }
 
 .itemList {
@@ -73,6 +75,11 @@ a {
 
 .previewPic {
     width:100%;
+}
+
+.infoAttribution {
+    font-size: 12px;
+    color: gray;
 }
 
 @media only screen and (max-width: 767px) {
@@ -91,6 +98,10 @@ a {
 
     h2 {
         font-size: 20px !important;
+    }
+
+    #mapError {
+        top:50px;
     }
 }
 

@@ -9,16 +9,16 @@ var initMap = function(){
       });
 
     infoWindow = new google.maps.InfoWindow();
-
     bounds = new google.maps.LatLngBounds();
 
     ko.applyBindings(new ViewModel());
+
 };
 
 var mapError = function(){
     console.log("Sorry, something went wrong. Please try reloading the page.")
+    $("#map").html("<div id='mapError'>Whoops, this is embarassing. Something went wrong; please reload the page.</div>")
 }
-
 
 var MapItem = function(data) {
     var self=this;
@@ -29,12 +29,21 @@ var MapItem = function(data) {
     this.artist = ko.observable(data.artist);
     this.imgDesc = ko.observable(data.imgDesc)
     this.description = ko.observable(data.description);
+    
+    var keywords = self.title() +" " + self.artist() + " " + self.description();
+    keywords = keywords.toLowerCase()
+
+    this.keywords = ko.observable(keywords);
 
     this.marker = new google.maps.Marker({
         position: data.geo,
         title: data.title,
         map:map
     });
+
+    this.foursquareList = ko.observableArray([]);
+    this.foursquareError = ko.observable("");
+    this.foursquareErrorVisible = ko.observable(false);
 
     bounds.extend(this.marker.position);
 
@@ -44,10 +53,6 @@ var MapItem = function(data) {
 
     // pan to the marker and scroll to/highlight the corresponding sidebar item
     this.highlightMarker = function(){
-
-        //reset
-        $(".infoResults").css("display","none");
-        $(".item").css("background-color","transparent");
 
         var latlng = self.marker.getPosition();
         map.panTo(latlng);
@@ -70,46 +75,19 @@ var MapItem = function(data) {
             scrollTop: scrollPos},
             1000 );
 
-        $("#" + self.shortname()).css("background-color","mediumorchid");
-
-
-    };
-
-    // search this item's keywords for the entered search terms.
-    this.searchFilter = function(textList){
-        var keywords = self.title() + " " + self.artist() + " " + self.description();
-        keywords = keywords.toLowerCase();
-
-        var match = true;
-        for (var i=0;i<textList.length;i++){
-            if (!keywords.includes(textList[i])){
-                match = false;
-            }
-        }
-
-        if (match === true){
-            self.setVisible();
-        } else {
-            self.setHidden();
-        }
     };
 
     // set the marker and corresponding sidebar entry to visible
     this.setVisible = function(){
         self.marker.setVisible(true);
-        $("#" + self.shortname()).css("display","block");
-        return true;
     };
 
     // set the marker and corresponding sidebar entry to hidden
     this.setHidden = function(){
         self.marker.setVisible(false);
-        $("#" + self.shortname()).css("display","none");
-        return false;
     };
-
-
 };
+
 
 var ViewModel = function(data){
     var self = this;
@@ -119,105 +97,73 @@ var ViewModel = function(data){
         self.itemList.push( new MapItem(mapItem));
     });
 
+    this.selectMarker = function(item, event){
+        this.highlightMarker();
+        self.getFoursquareData(item, event);
+    };
+
+    this.searchText = ko.observable("");
+    
+    this.filteredList = ko.computed(function(){
+        var searchString = self.searchText().toLowerCase();
+        
+        if (!searchString){
+            self.itemList().forEach(function(item){
+                item.setVisible()
+            })
+            return self.itemList()
+        } else {
+            return ko.utils.arrayFilter(self.itemList(), function(item){
+                if (item.keywords().indexOf(searchString) > -1){
+                    item.setVisible();
+                    return true;
+                } else {
+                    item.setHidden();
+                    return false;
+                }
+            })
+        }
+    });
+
     map.fitBounds(bounds);
 
     google.maps.event.addDomListener(window, 'resize', function() {
         map.fitBounds(bounds);
     });
 
-    this.selectMarker = function(){
-        this.highlightMarker();
-    };
+    this.getFoursquareData = function(item, event){
+        var position = item.marker.position;
+        var id = item.shortname();
 
-    this.muralSearch = function(){
-        map.fitBounds(bounds);
-
-        $("#searchError").css("display","none");
-        var searchTerm = $("#muralSearch").val().toLowerCase();
-
-        // make sure the input field wasn't blank before searching
-        if (searchTerm === ""){
-            $("#searchError").css("display","block").text("Sorry, I didn't catch that. Try your search again!");
+        if ($(event.currentTarget).attr("type") === "button"){
+            var dataType = $(event.currentTarget).attr("name");
         } else {
-            searchList = searchTerm.split(" ").filter(i => i);
-            self.itemList().forEach(function(item){
-                item.searchFilter(searchList);
-            });
-        }
-
-        if($(".item:visible").length === 0){
-            $("#searchError").css("display","block").text("Your search didn't return any results! Clear it or try again.");
-        }
-    };
-
-    // clear the search and set all items to visible
-    this.clearSearch = function(){
-        $("#searchError").css("display","none");
-        self.itemList().forEach(function(item){
-            item.setVisible();
-        });
-    };
-
-
-    this.getRestaurants = function(){
-
-        //reset results block
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
-        resultsBlock.text("");
-
-        var results = self.getFoursquareData("#"+ this.shortname(), "food", this.marker.position);
-
-        resultsBlock.css("display","block").text(results);
-    };
-
-    this.getDrinks = function(){
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
-
-        resultsBlock.text("");
-
-        var results = self.getFoursquareData("#" + this.shortname(), "drinks", this.marker.position);
-    };
-
-    this.getHotels = function(){
-        var resultsBlock = $("#" + this.shortname()).find(".infoResults");
-
-        resultsBlock.text("");
-        var results = self.getFoursquareData("#" + this.shortname(), "hotel", this.marker.position);
-
-    };
-
-    this.getFoursquareData = function(id, dataType, position){
+            var dataType = "food"
+        };
 
         var url = "https://api.foursquare.com/v2/venues/explore?ll=" + position.lat() +"," + position.lng();
         url += "&client_id=" + foursquare_client_id + "&client_secret=" + foursquare_secret + "&v=20131016&query="+dataType;
 
-        // var url = "http://respons.json";
-
         $.ajax({
             url:url,
             success: function(data){
+                item.foursquareError = "";
+                item.foursquareErrorVisible = false;
+
                 var response = data;
                 response=response.response.groups[0].items;
-
-                var formattedResponse = "<ul>";
+                
+                item.foursquareList.removeAll();
                 for (var i=0;i<5;i++){
-                    var item = "<li><span><a href='https://foursquare.com/v/a/" + response[i].venue.id + "' target='_blank'>" + response[i].venue.name + "</a></span></li>";
-                    formattedResponse += item;
+                    item.foursquareList.push({"link":"https://foursquare.com/v/a/" + response[i].venue.id.toString(), "name":response[i].venue.name})
                 }
-                formattedResponse += "</ul>";
-
-                self.populateResults(id, formattedResponse);
-
             },
             error: function(error){
                 console.log(error);
-                self.populateResults(id, "<span>Sorry, the search failed. Please try again later.</span>");
+                item.foursquareError = "Sorry, the search failed. Please try again later."
+                item.foursquareErrorVisible = true;
             }
         });
     };
 
-    this.populateResults = function(id, response){
-        var resultsBlock = $(id).find(".infoResults");
-        resultsBlock.css("display","block").html(response);
-    };
 };
